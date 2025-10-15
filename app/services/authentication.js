@@ -23,6 +23,20 @@ export async function Register(request, response) {
     }
 }
 
+export async function Login(request, response) {
+    try{
+        let user = await User.findOne({ email: request.body.email })
+        if(user){
+            
+        }else{
+            response.status(401).end()
+        }
+    }
+    catch(err){
+
+    }
+}
+
 async function HashPashword(plainText) {
     try {
         let _hash = await hash(plainText, 10)
