@@ -1,8 +1,8 @@
 import e from "express"
-import { authentication_router } from "./app/routes/authentication.js"
+import { app_routes } from "./app/routes/index.js"
 
 const app = e()
 
-app.use('/authentication', authentication_router)
+app.use('/', app_routes)
 
-app.listen(3000, ()=>{ console.log("Server runnning at 3000") })
+app.listen(3000, ()=>{ console.log("Server is runnning at 3000") })
