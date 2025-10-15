@@ -1,4 +1,4 @@
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { User } from "../models/User.js";
 
 export async function Register(request, response) {
@@ -43,5 +43,14 @@ async function HashPashword(plainText) {
         return _hash
     }catch(err){
         return undefined
+    }
+}
+
+async function ComparePassword(_plain, _hash) {
+    let result = await compare(_plain, _hash)
+    if(result){
+        return true
+    }else{
+        return false
     }
 }
