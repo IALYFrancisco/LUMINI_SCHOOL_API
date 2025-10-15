@@ -12,6 +12,6 @@ export async function Register(request, response) {
             response.status(401).json('Request body isn\'t defined.')
         }
     }catch(err){
-        response.status(401).json(err)
+        response.status(400).json(err)
     }
 }
