@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import { User } from "../models/User.js";
 
 export async function Register(request, response) {
@@ -18,5 +19,14 @@ export async function Register(request, response) {
         }
     }catch(err){
         response.status(400).json(err)
+    }
+}
+
+async function HashPashword(plainText) {
+    try {
+        let hash = await hash(plainText, 10)
+        return hash
+    }catch(err){
+        return undefined
     }
 }
