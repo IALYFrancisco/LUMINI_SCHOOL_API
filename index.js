@@ -11,7 +11,6 @@ config()
 DbConnection()
 
 app.use(e.json())
-app.use('/', app_routes)
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -26,5 +25,13 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
+
+
+app.use((request, response, next)=>{
+    response.locals.user = request.session.user
+    next()
+})
+
+app.use('/', app_routes)
 
 app.listen(3000, () =>{ console.log("Server is runnning at 3000") })
