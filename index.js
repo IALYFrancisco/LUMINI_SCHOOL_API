@@ -20,7 +20,11 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.DB_URI,
         ttl: 14 * 24 * 60 * 60
-    })
+    }),
+    cookie: {
+        secure: JSON.parse(process.env.APP_PROD),
+        maxAge: 1000 * 60 * 60 * 24
+    }
 }))
 
 app.listen(3000, () =>{ console.log("Server is runnning at 3000") })
