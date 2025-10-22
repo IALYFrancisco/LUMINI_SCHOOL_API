@@ -9,4 +9,4 @@ const formationSchema = new mongoose.Schema({
     published: { type: Boolean, required: true, default: false }
 },{timestamps: true})
 
-const Formation = new mongoose.model('Formations', formationSchema)
+export const Formation = new mongoose.model('Formations', formationSchema)
