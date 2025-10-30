@@ -1,8 +1,8 @@
 import multer, { memoryStorage } from "multer"
 
 export async function AddFormation(request, response) {
-    console.log(request.body)
-    response.json(request.body)
+    console.log(request.file)
+    response.json(request.file)
 }
 
 const storage = memoryStorage()
@@ -16,7 +16,7 @@ const fileFilter = (request, file, cb)=>{
     }
 }
 
-const upload = multer({
+export const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: { fileSize: 15*1024*1024}

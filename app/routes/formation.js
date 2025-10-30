@@ -1,6 +1,6 @@
 import Router from 'express'
-import { AddFormation } from '../services/formation.js'
+import { AddFormation, upload } from '../services/formation.js'
 
 export const formationRouter = Router()
 
-formationRouter.post('/add', AddFormation)
+formationRouter.post('/add', upload.single("poster"), AddFormation)
