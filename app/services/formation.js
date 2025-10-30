@@ -16,11 +16,10 @@ export async function AddFormation(request, response) {
                 let output = `./app/public/formations/${fileName}`
                 await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
             }
-            response.status(201).json(result)
+            response.status(201).json('http://localhost:3000/'+result.image)
     }catch(err){
         response.status(500).json(err)
     }
-    response.json(request.body)
 }
 
 const storage = memoryStorage()
@@ -37,7 +36,7 @@ const fileFilter = (request, file, cb)=>{
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export const staticFilesService = e.static(path.join(__dirname, 'app/public'))
+export const staticFilesService = e.static(path.join(__dirname, '../public'))
 
 export const upload = multer({
     storage: storage,
