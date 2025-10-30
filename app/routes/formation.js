@@ -3,4 +3,4 @@ import { AddFormation } from '../services/formation.js'
 
 export const formationRouter = Router()
 
-formationRouter.post('', AddFormation)
+formationRouter.post('/add', AddFormation)
