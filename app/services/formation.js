@@ -1,4 +1,7 @@
+import e from "express"
 import multer, { memoryStorage } from "multer"
+import path from "path"
+import { fileURLToPath } from 'url'
 
 export async function AddFormation(request, response) {
     console.log(request.file)
@@ -15,6 +18,11 @@ const fileFilter = (request, file, cb)=>{
         cb(new Error("File type not allowed."), false)
     }
 }
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export const staticFilesService = e.static(path.join(__dirname, 'app/public'))
 
 export const upload = multer({
     storage: storage,

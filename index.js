@@ -4,11 +4,14 @@ import { config } from "dotenv"
 import { DbConnection } from "./app/services/db_connection.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import { staticFilesService } from "./app/services/formation.js"
 
 const app = e()
 
 config()
 DbConnection()
+
+app.use(staticFilesService)
 
 app.use(e.json())
 
