@@ -22,6 +22,15 @@ export async function AddFormation(request, response) {
     }
 }
 
+export async function GetFormation(request, response){
+    try{
+        let formations = await Formation.find({})
+        response.status(200).json(formations)
+    }catch(err){
+        response.status(500)
+    }
+}
+
 const storage = memoryStorage()
 
 const fileFilter = (request, file, cb)=>{
