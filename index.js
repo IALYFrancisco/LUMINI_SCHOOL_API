@@ -5,11 +5,14 @@ import { DbConnection } from "./app/services/db_connection.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import { staticFilesService } from "./app/services/formation.js"
+import { corsConfiguration } from "./app/services/cors.js"
 
 const app = e()
 
 config()
 DbConnection()
+
+app.use(corsConfiguration)
 
 app.use(staticFilesService)
 
