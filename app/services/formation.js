@@ -8,15 +8,15 @@ import sharp from "sharp"
 export async function AddFormation(request, response) {
     try{
         if(!request.file) return response.status(400).end()
-            let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
-            let newFormation = new Formation(request.body)
-            newFormation.image = `formations/${fileName}`
-            let result = await newFormation.save()
-            if(result){
-                let output = `./app/public/formations/${fileName}`
-                await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
-            }
-            response.status(201).json('http://localhost:3000/'+result.image)
+        let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
+        let newFormation = new Formation(request.body)
+        newFormation.image = `formations/${fileName}`
+        let result = await newFormation.save()
+        if(result){
+            let output = `./app/public/formations/${fileName}`
+            await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+        }
+        response.status(201).json('http://localhost:3000/'+result.image)
     }catch(err){
         response.status(500).json(err)
     }
