@@ -34,7 +34,7 @@ export async function GetFormation(request, response){
 export async function DeleteFormation(request, response){
     try{
         let result = await Formation.findByIdAndDelete({ _id: request.body._id })
-        response.json(result)
+        response.status(200).end()
     }catch(err){
         response.status(500)
     }
