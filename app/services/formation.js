@@ -31,6 +31,15 @@ export async function GetFormation(request, response){
     }
 }
 
+export async function DeleteFormation(request, response){
+    try{
+        let result = await Formation.findByIdAndDelete({ _id: request.body._id })
+        response.json(result)
+    }catch(err){
+        response.status(500)
+    }
+}
+
 const storage = memoryStorage()
 
 const fileFilter = (request, file, cb)=>{
