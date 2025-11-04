@@ -27,7 +27,16 @@ export async function GetFormation(request, response){
         let formations = await Formation.find({})
         response.status(200).json(formations)
     }catch(err){
-        response.status(500)
+        response.status(500).end()
+    }
+}
+
+export async function GetFormationWithFilters(request, response) {
+    try{
+        let formation = await Formation.find()
+    }
+    catch(err){
+        response.status(500).end()
     }
 }
 
