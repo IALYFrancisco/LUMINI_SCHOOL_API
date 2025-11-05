@@ -16,7 +16,7 @@ export async function AddFormation(request, response) {
             let output = `./app/public/formations/${fileName}`
             await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
         }
-        response.status(201).json('http://localhost:3000/'+result.image)
+        response.status(201).json(`${process.env.APP_DOMAIN}`+result.image)
     }catch(err){
         response.status(500).json(err)
     }
@@ -24,6 +24,9 @@ export async function AddFormation(request, response) {
 
 export async function GetFormation(request, response){
     try{
+        if(true){
+            console.log(request.params)
+        }
         let formations = await Formation.find({})
         response.status(200).json(formations)
     }catch(err){
@@ -31,14 +34,14 @@ export async function GetFormation(request, response){
     }
 }
 
-export async function GetFormationWithFilters(request, response) {
-    try{
-        let formation = await Formation.find()
-    }
-    catch(err){
-        response.status(500).end()
-    }
-}
+// export async function GetFormationWithFilters(request, response) {
+//     try{
+//         let formation = await Formation.find()
+//     }
+//     catch(err){
+//         response.status(500).end()
+//     }
+// }
 
 export async function DeleteFormation(request, response){
     try{

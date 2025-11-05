@@ -39,4 +39,4 @@ app.use((request, response, next)=>{
 
 app.use('/', app_routes)
 
-app.listen(3000, () =>{ console.log("Server is runnning at 3000") })
+app.listen(3000, () =>{ console.log(`Server is runnning at ${process.env.APP_DOMAIN}`) })
