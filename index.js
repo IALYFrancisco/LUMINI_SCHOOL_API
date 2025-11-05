@@ -4,11 +4,17 @@ import { config } from "dotenv"
 import { DbConnection } from "./app/services/db_connection.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import { staticFilesService } from "./app/services/formation.js"
+import { corsConfiguration } from "./app/services/cors.js"
 
 const app = e()
 
 config()
 DbConnection()
+
+app.use(corsConfiguration)
+
+app.use(staticFilesService)
 
 app.use(e.json())
 
@@ -26,7 +32,6 @@ app.use(session({
     }
 }))
 
-
 app.use((request, response, next)=>{
     response.locals.user = request.session.user
     next()
@@ -34,4 +39,4 @@ app.use((request, response, next)=>{
 
 app.use('/', app_routes)
 
-app.listen(3000, () =>{ console.log("Server is runnning at 3000") })
+app.listen(3000, () =>{ console.log(`Server is runnning at ${process.env.APP_DOMAIN}`) })
