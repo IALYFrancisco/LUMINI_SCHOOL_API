@@ -4,6 +4,7 @@ import path from "path"
 import { fileURLToPath } from 'url'
 import { Formation } from "../models/Formation.js"
 import sharp from "sharp"
+import { title } from "process"
 
 export async function AddFormation(request, response) {
     try{
@@ -24,24 +25,22 @@ export async function AddFormation(request, response) {
 
 export async function GetFormation(request, response){
     try{
-        if(true){
-            console.log(request.params)
+        const { _id, title } = request.query
+        if(_id || title){
+            let formation = await Formation.find({ _id: _id, title: title })
+            if(formation.length===0){
+                response.status(209)
+            }else{
+                response.status(200).json(formation)
+            }
+        }else{
+            let formations = await Formation.find({})
+            response.status(200).json(formations)
         }
-        let formations = await Formation.find({})
-        response.status(200).json(formations)
     }catch(err){
         response.status(500).end()
     }
 }
-
-// export async function GetFormationWithFilters(request, response) {
-//     try{
-//         let formation = await Formation.find()
-//     }
-//     catch(err){
-//         response.status(500).end()
-//     }
-// }
 
 export async function DeleteFormation(request, response){
     try{
