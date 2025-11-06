@@ -45,8 +45,18 @@ export async function Login(request, response) {
 
 export async function Logout(request, response) {
     try{
-        console.log(request)
-        response.end()
+        if(request.session){
+            request.session.destroy((err)=>{
+                if(err){
+                    response.status(500).end()
+                }
+                console.log(request)
+                response.clearCookie("connect.sid", { path: "/" })
+                return response.status(200).end()
+            })
+        } else {
+            return response.status(209)
+        }
     }
     catch(err){
         response.status(500).end()
