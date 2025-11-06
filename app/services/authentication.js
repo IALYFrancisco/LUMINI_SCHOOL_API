@@ -43,6 +43,16 @@ export async function Login(request, response) {
     }
 }
 
+export async function Logout(request, response) {
+    try{
+        console.log(request)
+        response.end()
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 async function HashPashword(plainText) {
     try {
         let _hash = await hash(plainText, 10)
