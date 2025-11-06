@@ -45,17 +45,16 @@ export async function Login(request, response) {
 
 export async function Logout(request, response) {
     try{
-        if(request.session){
+        if(request.session && request.session.user){
             request.session.destroy((err)=>{
                 if(err){
-                    response.status(500).end()
+                    return response.status(500).end()
                 }
-                console.log(request)
                 response.clearCookie("connect.sid", { path: "/" })
                 return response.status(200).end()
             })
         } else {
-            return response.status(209)
+            return response.status(209).end()
         }
     }
     catch(err){
