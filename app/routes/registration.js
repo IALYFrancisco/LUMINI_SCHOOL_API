@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { CreateRegistration } from "../services/registration";
-import { isAuthenticated } from "../services/authentication";
+import { CreateRegistration } from "../services/registration.js";
+import { isAuthenticated } from "../services/authentication.js";
 
 export const registrationRouter = Router()
 

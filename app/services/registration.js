@@ -1,4 +1,4 @@
-import { Registration } from "../models/Registration"
+import { Registration } from "../models/Registration.js"
 
 export async function CreateRegistration(request, response) {
     try{
