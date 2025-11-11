@@ -24,11 +24,16 @@ export async function AddFormation(request, response) {
 
 export async function GetFormation(request, response){
     try{
-        const { _id, title } = request.query
+        var { _id, title } = request.query
         if(_id || title){
-            let formation = await Formation.find({ _id: _id, title: title })
+            if(_id){
+                var formation = await Formation.find({ _id: _id })
+            }
+            if(title){
+                var formation = await Formation.find({ title: title })
+            }
             if(formation.length===0){
-                response.status(209)
+                response.status(209).end()
             }else{
                 response.status(200).json(formation)
             }
