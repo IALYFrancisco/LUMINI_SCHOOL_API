@@ -29,7 +29,7 @@ export async function Login(request, response) {
         if(user){
             let result = await ComparePassword(request.body.password, user.password)
             if(result){
-                request.session.user = { _id: user._id, name: user.name, email: user.email, status: user.status }
+                request.session.user = { _id: user._id, name: user.name, email: user.email, status: user.status, phoneNumber: user.phoneNumber }
                 response.status(200).end()
             }else{
                 response.status(401).end()
