@@ -6,7 +6,7 @@ const UserSchema = new Schema({
     status: { type: String, required: true, default: "user" },
     password: { type: String, required: true },
     registerDate: { type: Date, required: true, default: Date.now() },
-    phoneNumber: { type: String, required: true, default: null },
+    phoneNumber: { type: String, default: null },
 })
 
 export const User = new model('Users', UserSchema)
