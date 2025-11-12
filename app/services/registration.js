@@ -1,14 +1,27 @@
 import { Registration } from "../models/Registration.js"
+import { User } from "../models/User.js"
 
 export async function CreateRegistration(request, response) {
     try{
-       let registration = new Registration(request.body)
+        var userPhoneNumber = request.body.userPhoneNumber
+        let formationId = request.body.formation._id
+        let newRegistration = {
+            formation_id: formationId,
+            user_id: request.session.user._id
+        }
+       let registration = new Registration(newRegistration)
        let result = await registration.save()
-       if(result){
+
+       let user = await User.findByIdAndUpdate(request.session.user._id, {phoneNumber: userPhoneNumber})
+
+       if(result && user){
+            request.session.user.phoneNumber = userPhoneNumber
             response.status(201).end()
-       } 
+       }
+       
     }
     catch(err){
+        console.log(err)
         response.status(500).end()
     }
     
