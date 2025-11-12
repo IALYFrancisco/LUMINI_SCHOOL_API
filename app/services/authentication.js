@@ -84,6 +84,6 @@ export function isAuthenticated(request, response, next) {
     if(request.session && request.session.user){
         next()
     }else{
-        return response.status(401).end()
+        return response.status(209).end()
     }
 }
