@@ -63,15 +63,31 @@ export async function SendClientEmail(request, response){
             </body>
             </html>`
 
-        let emailToSend = {}
+        let emailToSend = {
+            name: "Email from LUMINI School client to the administrator of the platform.",
+            subject: "Message d'un client provenant de LUMINI School.",
+            sender: {
+                name: "LUMINI School",
+                email: "franciscoialy43@gmail.com"
+            },
+            to: [{
+                name: `${process.env.SUPERUSER_NAME}`,
+                email: `${process.env.SUPERUSER_EMAIL}`
+            }],
+            htmlContent: emailTemplate
+        }
 
         axios.post(process.env.EMAIL_SERVER_URL, emailToSend, { headers: {
             "content-type": "application/json",
-            "api-key": 
-        } })
-
-        response.status(200).end()
+            "api-key": process.env.EMAIL_API_KEY
+        } }).then(()=>{
+            response.status(200).end()
+        }).catch((err)=>{
+            console.log(err)
+            response.status(500).end()
+        })
     }catch(err){
+        console.log(err)
         response.status(500).end()
     }
 }
