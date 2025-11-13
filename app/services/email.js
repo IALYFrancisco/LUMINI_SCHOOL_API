@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export async function SendClientEmail(request, response){
     try{
 
@@ -61,7 +63,12 @@ export async function SendClientEmail(request, response){
             </body>
             </html>`
 
-        axios.post(``)
+        let emailToSend = {}
+
+        axios.post(process.env.EMAIL_SERVER_URL, emailToSend, { headers: {
+            "content-type": "application/json",
+            "api-key": 
+        } })
 
         response.status(200).end()
     }catch(err){
