@@ -3,8 +3,10 @@ import fs from 'fs'
 import path from "path";
 import os from 'os'
 import { config } from "dotenv";
+import { DbConnection } from "../app/services/db_connection.js";
 
-config({ path: '../.env' })
+config()
+DbConnection()
 
 async function CreateSuperuserAndSaveLocal(){
     try{
@@ -17,7 +19,7 @@ async function CreateSuperuserAndSaveLocal(){
                 'superuser'
             )
             fs.mkdirSync(superuserInfosLocation, { recursive: true })
-            let fileContents = superuser
+            let fileContents = `{name: '${superuser.name}',email: '${superuser.email}',status: '${superuser.status}',password: '${superuser.password}'}`
             let filePath = path.join(superuserInfosLocation, 'informations.json')
             fs.writeFileSync(filePath, fileContents, 'utf-8')
             console.log(`Superuser informations are saved at ${filePath}`)

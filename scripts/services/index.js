@@ -5,19 +5,19 @@ import { User } from "../../app/models/User.js"
 export async function CreateSuperuser(){
     try{
         if(process.env.SUPERUSER_EMAIL && process.env.SUPERUSER_NAME){
-            let _user = User.findOne({email: process.env.SUPERUSER_EMAIL})
-            let user = User.findOne({status: 'superuser'})
+            let _user = await User.findOne({email: process.env.SUPERUSER_EMAIL})
+            let user = await User.findOne({status: 'superuser'})
             if(user || _user){
                 console.log('Maybe a superuser already exist or maybe an user with provided email already exist.')
                 return undefined
             }else{
                 let superuserPassword = randomBytes(32).toString('hex')
-                let hashedSuperuserPassword = HashPassword(superuserPassword)
+                let hashedSuperuserPassword = await HashPassword(superuserPassword)
                 let superuser = {
                     name: process.env.SUPERUSER_NAME,
                     email: process.env.SUPERUSER_EMAIL,
                     status: 'superuser',
-                    password: hashedSuperuserPassword
+                    password: `${hashedSuperuserPassword}`
                 }
                 let newSuperuser = new User(superuser)
                 let result = await newSuperuser.save()
@@ -28,12 +28,11 @@ export async function CreateSuperuser(){
                 }
             }
         }else{
-            console.log(process.env.SUPERUSER_NAME)
             console.log('Error creating superuser, SUPERUSER_NAME and SUPERUSER_EMAIL aren\'t defined.')
             return undefined
         }
     }catch(err){
-        console.log('Error creating superuser.')
+        console.log('Error creating superuser.', err)
         return undefined
     }
 }
