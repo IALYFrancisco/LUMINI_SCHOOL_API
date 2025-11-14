@@ -29,7 +29,9 @@ export async function CreateRegistration(request, response) {
 export async function GetRegistrations(request, response){
     try{
         let registrations = await Registration.find()
-        response.status(200).json(registrations)
+        console.log(registrations)
+        // response.status(200).json(registrations)
+        response.status(200).end()
     }
     catch(err){
         response.status(500).end()
