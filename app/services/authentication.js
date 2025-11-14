@@ -62,7 +62,7 @@ export async function Logout(request, response) {
     }
 }
 
-async function HashPashword(plainText) {
+export async function HashPashword(plainText) {
     try {
         let _hash = await hash(plainText, 10)
         return _hash
