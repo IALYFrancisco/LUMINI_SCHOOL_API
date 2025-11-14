@@ -5,7 +5,8 @@ const UserSchema = new Schema({
     email: { type: String, required: true },
     status: { type: String, required: true, default: "user" },
     password: { type: String, required: true },
-    registerDate: { type: Date, required: true, default: Date.now() }
+    registerDate: { type: Date, required: true, default: Date.now() },
+    phoneNumber: { type: String, default: null },
 })
 
 export const User = new model('Users', UserSchema)
