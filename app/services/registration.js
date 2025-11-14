@@ -28,10 +28,11 @@ export async function CreateRegistration(request, response) {
 
 export async function GetRegistrations(request, response){
     try{
-        let registrations = await Registration.find()
-        console.log(registrations)
-        // response.status(200).json(registrations)
-        response.status(200).end()
+        let registrations = await Registration.find({}, {__v: 0})
+        registrations.forEach(registration => {
+            registration.user = 12
+        });
+        response.status(200).json(registrations)
     }
     catch(err){
         response.status(500).end()
