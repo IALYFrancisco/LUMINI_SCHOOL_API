@@ -8,7 +8,7 @@ export async function Register(request, response) {
             if(user){
                 response.status(409).end()
             }else{
-                request.body.password = await HashPashword(request.body.password)
+                request.body.password = await HashPassword(request.body.password)
                 let newUser = User(request.body)
                 await newUser.save()
                 if(newUser){
@@ -62,7 +62,7 @@ export async function Logout(request, response) {
     }
 }
 
-export async function HashPashword(plainText) {
+export async function HashPassword(plainText) {
     try {
         let _hash = await hash(plainText, 10)
         return _hash

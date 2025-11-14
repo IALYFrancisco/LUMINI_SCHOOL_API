@@ -1,0 +1,39 @@
+import { randomBytes } from "crypto"
+import { HashPassword } from "../../app/services/authentication.js"
+import { User } from "../../app/models/User.js"
+
+export async function CreateSuperuser(){
+    try{
+        if(process.env.SUPERUSER_EMAIL && process.env.SUPERUSER_NAME){
+            let _user = User.findOne({email: process.env.SUPERUSER_EMAIL})
+            let user = User.findOne({status: 'superuser'})
+            if(user || _user){
+                console.log('Maybe a superuser already exist or maybe an user with provided email already exist.')
+                return undefined
+            }else{
+                let superuserPassword = randomBytes(32).toString('hex')
+                let hashedSuperuserPassword = HashPassword(superuserPassword)
+                let superuser = {
+                    name: process.env.SUPERUSER_NAME,
+                    email: process.env.SUPERUSER_EMAIL,
+                    status: 'superuser',
+                    password: hashedSuperuserPassword
+                }
+                let newSuperuser = new User(superuser)
+                let result = await newSuperuser.save()
+                if(result){
+                    superuser.password = superuserPassword
+                    console.log('Superuser created in the database.')
+                    return superuser
+                }
+            }
+        }else{
+            console.log(process.env.SUPERUSER_NAME)
+            console.log('Error creating superuser, SUPERUSER_NAME and SUPERUSER_EMAIL aren\'t defined.')
+            return undefined
+        }
+    }catch(err){
+        console.log('Error creating superuser.')
+        return undefined
+    }
+}
