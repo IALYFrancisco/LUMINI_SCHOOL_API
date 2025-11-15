@@ -43,14 +43,14 @@ async function CreateSuperuserAndSendEmail(){
                         <ul>
                             <li>
                                 <h4 class="poppins-regular" style="font-size: 14px; font-weight: 600; display: inline; color: #4a78a6;">Nom :</h4>
-                                <p class="poppins-regular" style="font-size: 14px; display: inline;">IALY Francisco Raymond</p>
+                                <p class="poppins-regular" style="font-size: 14px; display: inline;">${process.env.SUPERUSER_NAME}</p>
                             </li>
                             <li style="margin-top: 20px;">
                                 <h4 class="poppins-regular" style="font-size: 14px; font-weight: 600; display: inline; color: #4a78a6;">Email :</h4>
-                                <p class="poppins-regular" style="font-size: 14px; display: inline;">ialyfrancisco7@gmail.com</p>
+                                <p class="poppins-regular" style="font-size: 14px; display: inline;">${process.env.SUPERUSER_EMAIL}</p>
                             </li>
                             <li style="margin-top: 20px;">
-                                <h4 class="poppins-regular" style="font-size: 14px; font-weight: 600; display: inline; color: #4a78a6;">Mot de passe :</h4>
+                                <h4 class="poppins-regular" style="font-size: 14px; font-weight: 600; display: inline; color: #4a78a6;">${superuserPassword}</h4>
                                 <p class="poppins-regular" style="font-size: 14px; display: inline;">034 47 635 78</p>
                             </li>
                         </ul>
@@ -61,18 +61,36 @@ async function CreateSuperuserAndSendEmail(){
             </section>
         </body>
         </html>`
-        
-        axios.post(`${EMAIL_SERVER_URL}`, email)
-        console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Superuser informations are saved at ${filePath}`))
-        let _result  = await CreateSuperuser()
-        console.log(chalk.bgHex('#098702ff').hex('#fffbfc')('Done!'))
+
+        let email = {
+            name: "Email from LUMINI School client to the administrator of the platform.",
+            subject: "Informations du superutilisateur.",
+            sender: {
+                name: "LUMINI School",
+                email: "franciscoialy43@gmail.com"
+            },
+            to:[{
+                name: `${process.env.SUPERUSER_NAME}`,
+                email: `${process.env.SUPERUSER_EMAIL}`
+            }],
+            htmlContent: emailTemplate
+        }
+
+        await axios.post(`${process.env.EMAIL_SERVER_URL}`, email, { headers: {
+            "Content-Type": "application/json",
+            "api-key": process.env.EMAIL_API_KEY
+        } }).then( async ()=>{
+            console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Superuser informations sent to the administrator.`))
+            await CreateSuperuser()
+            console.log(chalk.bgHex('#098702ff').hex('#fffbfc')('Done!'))
+        })
     }
     catch(err){
         console.log(err)
-        console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error saving local the superuser informations.'))
+        console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error sending to email the superuser informations.'))
     }finally{
         await disconnect()
     }
 }
 
-CreateSuperuserAndSaveLocal()
+CreateSuperuserAndSendEmail()
