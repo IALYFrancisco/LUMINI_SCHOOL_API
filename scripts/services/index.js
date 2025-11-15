@@ -35,7 +35,7 @@ export async function CreateSuperuser(){
             return undefined
         }
     }catch(err){
-        console.log('Error creating superuser.', err)
+        console.log('Error creating superuser.')
         return undefined
     }finally{
         await disconnect()
