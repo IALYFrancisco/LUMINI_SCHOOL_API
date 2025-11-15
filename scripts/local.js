@@ -11,7 +11,7 @@ config({ quiet: true })
 
 async function CreateSuperuserAndSaveLocal(){
     try{
-        await DbConnection()
+        DbConnection()
         let homedir = os.homedir()
         let superuserInfosLocation = path.join(
             homedir,
@@ -21,9 +21,9 @@ async function CreateSuperuserAndSaveLocal(){
         fs.mkdirSync(superuserInfosLocation, { recursive: true })
         let fileContents = `{name: '${process.env.SUPERUSER_NAME}',email: '${process.env.SUPERUSER_EMAIL}',status: 'superuser',password: '${superuserPassword}'}`
         let filePath = path.join(superuserInfosLocation, 'informations.json')
-        await fs.writeFileSync(filePath, fileContents, 'utf-8')
+        fs.writeFileSync(filePath, fileContents, 'utf-8')
         console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Superuser informations are saved at ${filePath}`))
-        let _result  = await CreateSuperuser()
+        await CreateSuperuser()
         console.log(chalk.bgHex('#098702ff').hex('#fffbfc')('Done!'))
     }
     catch(err){
