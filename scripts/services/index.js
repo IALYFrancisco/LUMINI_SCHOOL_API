@@ -1,9 +1,12 @@
 import { randomBytes } from "crypto"
 import { HashPassword } from "../../app/services/authentication.js"
 import { User } from "../../app/models/User.js"
+import { disconnect } from "mongoose"
+import { DbConnection } from "../../app/services/db_connection.js"
 
 export async function CreateSuperuser(){
     try{
+        DbConnection()
         if(process.env.SUPERUSER_EMAIL && process.env.SUPERUSER_NAME){
             let _user = await User.findOne({email: process.env.SUPERUSER_EMAIL})
             let user = await User.findOne({status: 'superuser'})
@@ -34,5 +37,7 @@ export async function CreateSuperuser(){
     }catch(err){
         console.log('Error creating superuser.', err)
         return undefined
+    }finally{
+        await disconnect()
     }
 }

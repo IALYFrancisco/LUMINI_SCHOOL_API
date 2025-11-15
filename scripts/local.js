@@ -3,10 +3,8 @@ import fs from 'fs'
 import path from "path";
 import os from 'os'
 import { config } from "dotenv";
-import { DbConnection } from "../app/services/db_connection.js";
 
 config()
-DbConnection()
 
 async function CreateSuperuserAndSaveLocal(){
     try{
