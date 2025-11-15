@@ -6,6 +6,7 @@ import session from "express-session"
 import MongoStore from "connect-mongo"
 import { staticFilesService } from "./app/services/formation.js"
 import { corsConfiguration } from "./app/services/cors.js"
+import chalk from "chalk"
 
 const app = e()
 
@@ -39,4 +40,4 @@ app.use((request, response, next)=>{
 
 app.use('/', app_routes)
 
-app.listen(3000, () =>{ console.log(`Server is runnning at ${process.env.APP_DOMAIN}`) })
+app.listen(3000, () =>{ console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Server is runnning at ${process.env.APP_DOMAIN}`)) })
