@@ -3,15 +3,17 @@ import { HashPassword } from "../../app/services/authentication.js"
 import { User } from "../../app/models/User.js"
 import { disconnect } from "mongoose"
 import { DbConnection } from "../../app/services/db_connection.js"
+import chalk from "chalk"
 
 export async function CreateSuperuser(){
     try{
+        console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")("Création de superutilisateur."))
         DbConnection()
         if(process.env.SUPERUSER_EMAIL && process.env.SUPERUSER_NAME){
             let _user = await User.findOne({email: process.env.SUPERUSER_EMAIL})
             let user = await User.findOne({status: 'superuser'})
             if(user || _user){
-                console.log('Maybe a superuser already exist or maybe an user with provided email already exist.')
+                console.log(chalk.bgHex('#6e4d0cff').hex("#fffbfc")('Maybe a superuser already exist or maybe an user with provided email already exist.'))
                 return undefined
             }else{
                 let superuserPassword = randomBytes(32).toString('hex')

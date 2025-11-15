@@ -3,8 +3,9 @@ import fs from 'fs'
 import path from "path";
 import os from 'os'
 import { config } from "dotenv";
+import chalk from "chalk";
 
-config()
+config({ quiet: true })
 
 async function CreateSuperuserAndSaveLocal(){
     try{
@@ -20,13 +21,13 @@ async function CreateSuperuserAndSaveLocal(){
             let fileContents = `{name: '${superuser.name}',email: '${superuser.email}',status: '${superuser.status}',password: '${superuser.password}'}`
             let filePath = path.join(superuserInfosLocation, 'informations.json')
             fs.writeFileSync(filePath, fileContents, 'utf-8')
-            console.log(`Superuser informations are saved at ${filePath}`)
-            console.log('Done !')
+            console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Superuser informations are saved at ${filePath}`))
+            console.log(chalk.bgHex('#098702ff').hex('#fffbfc')('Done !'))
         }
     }
     catch(err){
         console.log(err)
-        console.log('Error saving local the superuser informations.')
+        console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error saving local the superuser informations.'))
     }
 }
 
