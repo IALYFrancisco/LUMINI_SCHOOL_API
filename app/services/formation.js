@@ -16,7 +16,7 @@ export async function AddFormation(request, response) {
             let output = `./app/public/formations/${fileName}`
             await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
         }
-        response.status(201).json(`${process.env.APP_DOMAIN}`+result.image)
+        response.status(201).end()
     }catch(err){
         response.status(500).json(err)
     }
