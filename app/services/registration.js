@@ -28,10 +28,34 @@ export async function CreateRegistration(request, response) {
 
 export async function GetRegistrations(request, response){
     try{
-        let registrations = await Registration.find({}, {__v: 0})
-        registrations.forEach(registration => {
-            registration.user = 12
-        });
+        let registrations = await Registration.aggregate([
+            {
+                $lookup: {
+                    from: "formations",
+                    localField: "formation_id",
+                    foreignField: "_id",
+                    as: "formation"
+                }
+            },
+            { $unwind: "$formation" },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "user_id",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            { $unwind: "$user" },
+            {
+                $project: {
+                    formation_id: 0,
+                    user_id: 0,
+                    __v: 0
+                }
+            }
+        ])
+        console.log(registrations)
         response.status(200).json(registrations)
     }
     catch(err){
