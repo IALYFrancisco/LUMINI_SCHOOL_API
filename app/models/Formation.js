@@ -7,9 +7,9 @@ const formationSchema = new mongoose.Schema({
     description: { type: String, required: true, validate: {
         validator: function (value) {
             const wordCount = value.trim().split(/\s+/).length
-            return wordCount >= 100 && wordCount <= 150
+            return wordCount >= 50 && wordCount <= 150
         },
-        message: "The description must contains between 100 and 150 words."
+        message: "The description must contains between 50 and 150 words."
     } },
     prerequisites: { type: [String], default: [] },
     published: { type: Boolean, required: true, default: false }
