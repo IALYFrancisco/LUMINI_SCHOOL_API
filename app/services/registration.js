@@ -55,7 +55,6 @@ export async function GetRegistrations(request, response){
                 }
             }
         ])
-        console.log(registrations)
         response.status(200).json(registrations)
     }
     catch(err){
