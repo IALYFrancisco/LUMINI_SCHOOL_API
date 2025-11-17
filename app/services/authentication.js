@@ -87,11 +87,3 @@ export function isAuthenticated(request, response, next) {
         return response.status(401).end()
     }
 }
-
-export function forNotAuthenticatedOnly(request, response, next){
-    if(request.session && request.session.user){
-        return response.status(401).end()
-    }else{
-        next()
-    }
-}
