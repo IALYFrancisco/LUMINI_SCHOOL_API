@@ -50,8 +50,8 @@ async function CreateSuperuserAndSendEmail(){
                                 <p class="poppins-regular" style="font-size: 14px; display: inline;">${process.env.SUPERUSER_EMAIL}</p>
                             </li>
                             <li style="margin-top: 20px;">
-                                <h4 class="poppins-regular" style="font-size: 14px; font-weight: 600; display: inline; color: #4a78a6;">${superuserPassword}</h4>
-                                <p class="poppins-regular" style="font-size: 14px; display: inline;">034 47 635 78</p>
+                                <h4 class="poppins-regular" style="font-size: 14px; font-weight: 600; display: inline; color: #4a78a6;">Mot de passe :</h4>
+                                <p class="poppins-regular" style="font-size: 14px; display: inline;">${superuserPassword}</p>
                             </li>
                         </ul>
                     </main>
