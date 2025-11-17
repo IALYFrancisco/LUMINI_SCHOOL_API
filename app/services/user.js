@@ -3,7 +3,7 @@ export function GetUserInformations(request, response) {
 }
 
 export function isAdmin(request, response, next) {
-    if(request.session && request.session.user && request.session.user.status === "admin"){
+    if(request.session && request.session.user && request.session.user.status === "superuser"){
         next()
     }else{
         return response.status(401).end()
