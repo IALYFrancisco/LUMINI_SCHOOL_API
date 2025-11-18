@@ -10,13 +10,13 @@ async function CheckSuperuserAndHisEmail() {
             let _user = await User.findOne({email: process.env.SUPERUSER_EMAIL})
             let user = await User.findOne({status: 'superuser'})
             if(user || _user){
-                console.log(chalk.bgHex('#6e4d0cff').hex("#fffbfc")('Maybe a superuser already exist or maybe an user with provided email already exist.'))
+                console.log(chalk.bgHex('#6e4d0cff').hex("#fffbfc")('A superuser already exist or an user with provided email already exist.'))
                 return true
             }else{
                 return false
             }
         }else{
-            console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error creating superuser, SUPERUSER_NAME and SUPERUSER_EMAIL aren\'t defined.'))
+            console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error checking superuser, SUPERUSER_NAME and SUPERUSER_EMAIL aren\'t defined.'))
             return undefined
         }
     }catch(err){
