@@ -1,4 +1,4 @@
-import { CreateSuperuser, superuserPassword } from "./services/index.js";
+import { CheckSuperuserAndHisEmail, CreateSuperuser, superuserPassword } from "./services/index.js";
 import fs from 'fs'
 import path from "path";
 import os from 'os'
@@ -12,19 +12,26 @@ config({ quiet: true })
 async function CreateSuperuserAndSaveLocal(){
     try{
         DbConnection()
-        let homedir = os.homedir()
-        let superuserInfosLocation = path.join(
-            homedir,
-            '.luminischool',
-            'superuser'
-        )
-        fs.mkdirSync(superuserInfosLocation, { recursive: true })
-        let fileContents = `{name: '${process.env.SUPERUSER_NAME}',email: '${process.env.SUPERUSER_EMAIL}',status: 'superuser',password: '${superuserPassword}'}`
-        let filePath = path.join(superuserInfosLocation, 'informations.json')
-        fs.writeFileSync(filePath, fileContents, 'utf-8')
-        console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Superuser informations are saved at ${filePath}`))
-        await CreateSuperuser()
-        console.log(chalk.bgHex('#098702ff').hex('#fffbfc')('Done!'))
+        let checkingResult = await CheckSuperuserAndHisEmail()
+        if(checkingResult === true){
+            return
+        }else if(checkingResult === false){
+            let homedir = os.homedir()
+            let superuserInfosLocation = path.join(
+                homedir,
+                '.luminischool',
+                'superuser'
+            )
+            fs.mkdirSync(superuserInfosLocation, { recursive: true })
+            let fileContents = `{name: '${process.env.SUPERUSER_NAME}',email: '${process.env.SUPERUSER_EMAIL}',status: 'superuser',password: '${superuserPassword}'}`
+            let filePath = path.join(superuserInfosLocation, 'informations.json')
+            fs.writeFileSync(filePath, fileContents, 'utf-8')
+            console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")(`Superuser informations are saved at ${filePath}`))
+            await CreateSuperuser()
+            console.log(chalk.bgHex('#098702ff').hex('#fffbfc')('Done!'))
+        }else if(checkingResult === undefined){
+            return
+        }
     }
     catch(err){
         console.log(err)

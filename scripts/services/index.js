@@ -3,7 +3,7 @@ import { HashPassword } from "../../app/services/authentication.js"
 import { User } from "../../app/models/User.js"
 import chalk from "chalk"
 
-async function CheckSuperuserAndHisEmail() {
+export async function CheckSuperuserAndHisEmail() {
     try{
         console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")("Checking superuser and his email in the database."))
         if(process.env.SUPERUSER_EMAIL && process.env.SUPERUSER_NAME && process.env.EMAIL_SERVER_URL){
@@ -13,6 +13,7 @@ async function CheckSuperuserAndHisEmail() {
                 console.log(chalk.bgHex('#6e4d0cff').hex("#fffbfc")('A superuser already exist or an user with provided email already exist.'))
                 return true
             }else{
+                console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")("Superuser doesn't exist, superuser creation."))
                 return false
             }
         }else{
@@ -29,13 +30,7 @@ export const superuserPassword = randomBytes(32).toString('hex')
 
 export async function CreateSuperuser(){
     try{
-        console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")("Création de superutilisateur."))
-        let checkingResult = await CheckSuperuserAndHisEmail()
-        if(checkingResult === true){
-            return undefined
-        }else if(checkingResult === undefined){
-            return undefined
-        }else{
+        console.log(chalk.bgHex('#4a78a6').hex("#fffbfc")("Superuser creation."))
             let hashedSuperuserPassword = await HashPassword(superuserPassword)
             let superuser = {
                 name: process.env.SUPERUSER_NAME,
@@ -52,7 +47,6 @@ export async function CreateSuperuser(){
                 console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error saving superuser in the database.'))
                 return undefined
             }
-        }
     }catch(err){
         console.log(err)
         console.log(chalk.bgHex('#870202ff').hex('#fffbfc')('Error creating superuser.'))
