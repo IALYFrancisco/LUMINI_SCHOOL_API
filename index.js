@@ -31,6 +31,7 @@ app.use(session({
     }),
     cookie: {
         secure: JSON.parse(process.env.APP_PROD),
+        sameSite: "none",
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
