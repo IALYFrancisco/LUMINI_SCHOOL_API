@@ -13,6 +13,8 @@ const app = e()
 config()
 DbConnection()
 
+app.set("trust proxy", 1);
+
 app.use(corsConfiguration)
 
 app.use(staticFilesService)
