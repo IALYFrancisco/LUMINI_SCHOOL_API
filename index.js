@@ -30,8 +30,9 @@ app.use(session({
         ttl: 14 * 24 * 60 * 60
     }),
     cookie: {
+        httpOnly: true,
         secure: JSON.parse(process.env.APP_PROD),
-        sameSite: "none",
+        sameSite: JSON.parse(process.env.APP_PROD) ? "none" : "lax",
         maxAge: 1000 * 60 * 60 * 24
     }
 }))
