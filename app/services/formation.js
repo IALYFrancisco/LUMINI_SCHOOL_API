@@ -49,6 +49,12 @@ export async function GetFormation(request, response){
 export async function UpdateFormation(request, response) {
     try{
         let formation = await Formation.findByIdAndUpdate(request.body.formationId, request.body.update)
+        if(formation.published){
+            formation.publishDate = null
+        }else{
+            formation.publishDate = Date.now()
+        }
+        await formation.save()
         if(formation){
             response.status(200).end()
         }
