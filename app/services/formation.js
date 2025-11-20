@@ -48,7 +48,8 @@ export async function GetFormation(request, response){
 
 export async function UpdateFormation(request, response) {
     try{
-        response.status(200).json(request.body)
+        console.log(request.body)
+        response.status(200).end()
     }
     catch(err){
         response.status(500).end()
