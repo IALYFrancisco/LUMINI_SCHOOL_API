@@ -6,5 +6,6 @@ export const formationRouter = Router()
 
 formationRouter.post('/add', isAdminOrSuperuser, upload.single("poster"), AddFormation)
 formationRouter.get('/get', GetFormation)
-formationRouter.patch('/update', isAdminOrSuperuser, FormationPublication)
+formationRouter.patch('/publication', isAdminOrSuperuser, FormationPublication)
+formationRouter.put('/update', isAdminOrSuperuser, FormationPublication)
 formationRouter.delete('/delete', isAdminOrSuperuser, DeleteFormation)
