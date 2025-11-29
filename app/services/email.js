@@ -27,7 +27,7 @@ export async function SendClientEmail(request, response){
                     <main style="padding: 0 30px;">
                         <a href="https://luminischool.onrender.com/" target="_blank" style="text-decoration: none;">
                             <header style="padding-top: 30px; display: flex; align-items: center;">
-                                <!-- <img style="width: 50px;" src="logo_apipost.png" alt="Logo de LUMINI School"> -->
+                                <img style="width: 50px;" src="https://raw.githubusercontent.com/IALYFrancisco/ASSETS/refs/heads/main/ME/logo-de-lumini-school.png" alt="Logo de LUMINI School">
                                 <h2 class="poppins-regular" style=" display: flex; align-items: center; color: #4a78a6;">LUMINI School</h2>
                             </header>
                         </a>
