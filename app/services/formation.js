@@ -38,8 +38,13 @@ export async function GetFormation(request, response){
                 response.status(200).json(formation)
             }
         }else{
-            let formations = await Formation.find({})
-            response.status(200).json(formations)
+            if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
+                let formations = await Formation.find({})
+                response.status(200).json(formations)
+            }else{
+                let formations = await Formation.find({ published: true })
+                response.status(200).json(formations)
+            }
         }
     }catch(err){
         response.status(500).end()
