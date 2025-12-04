@@ -4,7 +4,7 @@ import path from "path"
 import { fileURLToPath } from 'url'
 import { Formation } from "../models/Formation.js"
 import sharp from "sharp"
- 
+
 export async function AddFormation(request, response) {
     try{
         if(!request.file) {
@@ -79,11 +79,20 @@ export async function FormationPublication(request, response) {
 
 export async function UpdateFormation(request, response){
     try{
-        response.status(200).json(request.body)
+        if(!request.file){
+            let formation = Formation.findByIdAndUpdate(request.body._id, requ)
+            let result = await newFormation.save()
+            if(result){
+                response.status(201).end()
+            }
+        }
+        response.status(200).end()
     }
     catch(err){
         response.status(500).end()
     }
+    let { _id } = request.query
+    response.status(200).end()
 }
 
 export async function DeleteFormation(request, response){
