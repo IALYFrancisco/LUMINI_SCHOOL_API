@@ -80,10 +80,11 @@ export async function FormationPublication(request, response) {
 export async function UpdateFormation(request, response){
     try{
         if(!request.file){
-            let formation = Formation.findByIdAndUpdate(request.body._id, requ)
-            let result = await newFormation.save()
+            let { _id } = request.query
+            let formation = await Formation.findByIdAndUpdate(_id, request.body)
+            let result = await formation.save()
             if(result){
-                response.status(201).end()
+                response.status(200).end()
             }
         }
         response.status(200).end()
@@ -91,8 +92,6 @@ export async function UpdateFormation(request, response){
     catch(err){
         response.status(500).end()
     }
-    let { _id } = request.query
-    response.status(200).end()
 }
 
 export async function DeleteFormation(request, response){
