@@ -79,17 +79,29 @@ export async function FormationPublication(request, response) {
 
 export async function UpdateFormation(request, response){
     try{
+        var { _id } = request.query
         if(!request.file){
-            let { _id } = request.query
             let formation = await Formation.findByIdAndUpdate(_id, request.body)
             let result = await formation.save()
             if(result){
                 response.status(200).end()
             }
+        }else{
+            let formation = await Formation.find({ _id: _id })
+            console.log(formation)
+            // let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
+            // let formation = await Formation.find({ _id: _id })
+            // formation.image = `formations/${fileName}`
+            // let result = await formation.save()
+            // if(result){
+            //     let output = `./app/public/formations/${fileName}`
+            //     await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+            //     response.status(200).end()
+            // }
         }
-        response.status(200).end()
     }
     catch(err){
+        console.log(err)
         response.status(500).end()
     }
 }
