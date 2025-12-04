@@ -4,7 +4,7 @@ import path from "path"
 import { fileURLToPath } from 'url'
 import { Formation } from "../models/Formation.js"
 import sharp from "sharp"
-
+ 
 export async function AddFormation(request, response) {
     try{
         if(!request.file) {
