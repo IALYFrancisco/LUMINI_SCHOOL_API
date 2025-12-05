@@ -1,5 +1,6 @@
 import { Router } from "express";
+import { AddArticle } from "../services/article.js";
 
 export const articleRouter = Router()
 
-// articleRouter.post('/create',)
+articleRouter.post('/create', AddArticle)
