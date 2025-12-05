@@ -32,17 +32,10 @@ export async function AddIllustration(request, response) {
 
 export async function AddFile(request, response){
     try{
-        // if(!request.file) { return response.status(209).end() }
-        // else {
-        //     let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
-        //     let url = `articles/files/${fileName}`
-        //     let output = `./app/public/articles/files/${fileName}`
-        //     await sharp(request.file.buffer)
-        // }
-        console.log(request.file)
-        response.end()
+        
     }
     catch(err){
         response.status(500).end()
     }
 }
+
