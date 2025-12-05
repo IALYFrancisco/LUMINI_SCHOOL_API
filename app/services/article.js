@@ -1,5 +1,7 @@
+import multer, { diskStorage } from "multer"
 import { Article } from "../models/Article.js"
 import sharp from "sharp"
+import path from 'path'
 
 export async function AddArticle(request, response) {
     response.status(200).json(request.body)
@@ -32,10 +34,17 @@ export async function AddIllustration(request, response) {
 
 export async function AddFile(request, response){
     try{
-        
+        let url = `/articles/files/${request.file.filename}`
+        response.status(201).json({ url: url })
     }
     catch(err){
         response.status(500).end()
     }
 }
 
+const storageUploadedFile = diskStorage({
+    destination: (request, file, callback) => callback(null, './app/public/articles/files'),
+    filename: (request, file, callback) => callback(null , Date.now() + path.extname(file.originalname))
+})
+
+export const uploadFile = multer({ storage: storageUploadedFile })
