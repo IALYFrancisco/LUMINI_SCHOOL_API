@@ -5,7 +5,7 @@ const articleSchema = new Schema({
     contents: { type: String, required: true },
     published: { type: Boolean, required: true, default: false },
     publishedAt: { type: Date, default: null },
-    author: { type: String, required: true },
+    author: { type: Schema.Types.ObjectId, required: true },
     image: { type: String, required: true }
 }, { timestamps: true })
 

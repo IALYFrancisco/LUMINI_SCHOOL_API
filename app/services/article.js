@@ -4,7 +4,24 @@ import sharp from "sharp"
 import path from 'path'
 
 export async function AddArticle(request, response) {
-    response.status(200).json(request.body)
+    try{
+        if(!request.file) {
+            return response.status(400).end()
+        }else{
+            let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
+            let newArticle = new Article(request.body)
+            newArticle.image = `articles/posters/${fileName}`
+            newArticle.author = request.session.user._id
+            let result = await newArticle.save()
+            if(result){
+                let output = `./app/public/articles/posters/${fileName}`
+                await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+                response.status(201).end()
+            }
+        }
+    }catch(err){
+        response.status(500).end()
+    }
 }
 
 export async function GetArticle(request, response) {
