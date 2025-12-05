@@ -13,3 +13,11 @@ export async function GetArticle(request, response) {
         response.status(500).end()
     }
 }
+
+export async function AddIllustration(request, response) {
+    try{
+        
+    }catch(err){
+
+    }
+}
