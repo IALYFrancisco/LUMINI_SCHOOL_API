@@ -6,5 +6,5 @@ import { upload } from "../services/formation.js";
 export const articleRouter = Router()
 
 articleRouter.get('/get', GetArticle)
-articleRouter.post('/create', AddArticle)
+articleRouter.post('/create', isAdminOrSuperuser, AddArticle)
 articleRouter.post('/add-illustration', isAdminOrSuperuser, upload.single("image"), AddIllustration)
