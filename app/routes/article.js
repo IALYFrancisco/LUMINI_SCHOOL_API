@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { AddArticle, GetArticle } from "../services/article.js";
+import { AddArticle, AddIllustration, GetArticle } from "../services/article.js";
+import { isAdminOrSuperuser } from "../services/user.js";
+import { upload } from "../services/formation.js";
 
 export const articleRouter = Router()
 
 articleRouter.get('/get', GetArticle)
 articleRouter.post('/create', AddArticle)
+articleRouter.post('/add-illustration', isAdminOrSuperuser, upload.single("image"), AddIllustration)
