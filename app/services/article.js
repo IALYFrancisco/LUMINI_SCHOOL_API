@@ -34,6 +34,23 @@ export async function GetArticle(request, response) {
     }
 }
 
+export async function ArticlePublication(request, response){
+    try{
+        let article = await Article.findByIdAndUpdate(request.body.articleId, request.body.update)
+        if(article.published){
+            article.publishedAt = null
+        }else{
+            article.publishedAt = Date.now()
+        }
+        await article.save()
+        if(article){
+            response.status(200).end()
+        }
+    }catch(err){
+        response.status(500).end()
+    }
+}
+
 export async function AddIllustration(request, response) {
     try{
         if(!request.file) { return response.status(209).end() }
