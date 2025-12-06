@@ -54,6 +54,7 @@ export async function ArticlePublication(request, response){
 export async function DeleteArticle(request, response) {
     try{
         await Article.findByIdAndDelete({ _id: request.body._id })
+        response.status(200).end()
     }
     catch(err){
         response.status(500).end()
