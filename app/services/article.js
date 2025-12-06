@@ -7,6 +7,7 @@ export async function AddArticle(request, response) {
     try{
         if(!request.file) {
             let newArticle = new Article(request.body)
+            newArticle.author = request.session.user._id
             let result = await newArticle.save()
             if(result){
                 return response.status(201).end()
