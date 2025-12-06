@@ -74,6 +74,37 @@ export async function ArticlePublication(request, response){
     }
 }
 
+export async function UpdateArticle(request, response){
+    try{
+        var { _id } = request.query
+        if(!request.file){
+            let article = await Article.findByIdAndUpdate(_id, request.body)
+            let result = await article.save()
+            if(result){
+                response.status(200).end()
+            }
+        }else{
+            let fileName = `${Date.now()}-${Math.random(Math.random()*1E9)}.jpeg`
+            let article = await Article.findOne({ _id: id })
+            article.image = `articles/posters/${fileName}`
+            article.author = request.session.user._id
+            let result = await article.save()
+            if(result && request.body){
+                let output = `./app/public/articles/posters/${fileName}`
+                await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+                let _article = await Article.findByIdAndUpdate(_id, request.body)
+                let _result = await _article.save()
+                if(_result){
+                    response.status(200).end()
+                }
+            }
+        }
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export async function DeleteArticle(request, response) {
     try{
         await Article.findByIdAndDelete({ _id: request.body._id })
