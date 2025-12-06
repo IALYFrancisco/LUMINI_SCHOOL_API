@@ -6,7 +6,11 @@ import path from 'path'
 export async function AddArticle(request, response) {
     try{
         if(!request.file) {
-            return response.status(400).end()
+            let newArticle = new Article(request.body)
+            let result = await newArticle.save()
+            if(result){
+                return response.status(201).end()
+            }
         }else{
             let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
             let newArticle = new Article(request.body)
