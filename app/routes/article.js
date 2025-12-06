@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AddArticle, AddFile, AddIllustration, ArticlePublication, GetArticle, uploadFile } from "../services/article.js";
+import { AddArticle, AddFile, AddIllustration, ArticlePublication, DeleteArticle, GetArticle, uploadFile } from "../services/article.js";
 import { isAdminOrSuperuser } from "../services/user.js";
 import { upload } from "../services/formation.js";
 
@@ -10,3 +10,4 @@ articleRouter.post('/create', isAdminOrSuperuser, upload.single("image"), AddArt
 articleRouter.post('/add-illustration', isAdminOrSuperuser, upload.single("image"), AddIllustration)
 articleRouter.post('/add-file', isAdminOrSuperuser, uploadFile.single("file"), AddFile)
 articleRouter.patch('/publication', isAdminOrSuperuser, ArticlePublication)
+articleRouter.delete('/delete', isAdminOrSuperuser, DeleteArticle)
