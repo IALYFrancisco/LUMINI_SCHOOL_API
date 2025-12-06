@@ -51,6 +51,15 @@ export async function ArticlePublication(request, response){
     }
 }
 
+export async function DeleteArticle(request, response) {
+    try{
+        await Article.findByIdAndDelete({ _id: request.body._id })
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export async function AddIllustration(request, response) {
     try{
         if(!request.file) { return response.status(209).end() }
