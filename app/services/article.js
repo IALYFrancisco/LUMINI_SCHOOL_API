@@ -85,7 +85,7 @@ export async function UpdateArticle(request, response){
             }
         }else{
             let fileName = `${Date.now()}-${Math.random(Math.random()*1E9)}.jpeg`
-            let article = await Article.findOne({ _id: id })
+            let article = await Article.findOne({ _id: _id })
             article.image = `articles/posters/${fileName}`
             article.author = request.session.user._id
             let result = await article.save()
@@ -101,6 +101,7 @@ export async function UpdateArticle(request, response){
         }
     }
     catch(err){
+        console.log(err)
         response.status(500).end()
     }
 }
