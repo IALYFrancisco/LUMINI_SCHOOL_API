@@ -31,8 +31,26 @@ export async function AddArticle(request, response) {
 
 export async function GetArticle(request, response) {
     try{
-        let articles = await Article.find()
-        response.status(200).json(articles)
+
+        var { _id, title } = request.query
+
+        if(_id || title) {
+            if(_id){
+                var article = await Article.findOne({ _id: _id })
+            }
+            if(title){
+                var article = await Article.findOne({ title: title })
+            }
+            response.status(200).json(article)
+        }else{
+            if(request.session && request.session.user && (request.session.user.status === "admin" || request.session.user.status === "superuser")){
+                let articles = await Article.find({})
+                response.status(200).json(articles)
+            }else{
+                let articles = await Article.find({ published: true })
+                response.status(200).json(articles)
+            }
+        }
     }
     catch(err){
         response.status(500).end()
