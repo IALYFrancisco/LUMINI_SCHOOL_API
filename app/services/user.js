@@ -1,3 +1,15 @@
+import { User } from "../models/User.js"
+
+export async function GetUser(request, response){
+    try{
+        let users = await User.find({ $not: { status: 'superuser' } })
+        response.status(200).json(users)
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export function GetUserInformations(request, response) {
     response.status(200).json(request.session.user)
 }
