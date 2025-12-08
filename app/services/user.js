@@ -21,3 +21,11 @@ export function isAdminOrSuperuser(request, response, next) {
         return response.status(401).end()
     }
 }
+
+export function isSuperuser(request, response, next) {
+    if(request.session && request.session.user && request.session.user.status === "superuser"){
+        next()
+    }else{
+        return response.status(401).end()
+    }
+}
