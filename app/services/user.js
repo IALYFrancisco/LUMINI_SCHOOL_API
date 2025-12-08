@@ -14,6 +14,19 @@ export function GetUserInformations(request, response) {
     response.status(200).json(request.session.user)
 }
 
+export async function ChangeUserStatus(request, response) {
+    try{
+        let user = await User.findByIdAndUpdate(request.body.userId, request.body.update)
+        let result = await user.save()
+        if(result){
+            response.status(200).end()
+        }
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export function isAdminOrSuperuser(request, response, next) {
     if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
         next()
