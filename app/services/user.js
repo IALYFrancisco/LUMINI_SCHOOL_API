@@ -1,5 +1,5 @@
 import { User } from "../models/User.js"
-import { ComparePassword } from "./authentication.js"
+import { ComparePassword, HashPassword } from "./authentication.js"
 
 export async function GetUser(request, response){
     try{
@@ -30,7 +30,38 @@ export async function ChangeUserStatus(request, response) {
 
 export async function ChangePassword(request, response){
     try{
-        const { _id } = request.body
+        const { _id, currentPassword, newPassword } = request.body
+        let user = await User.findById(_id)
+        if(user){
+            let result = await ComparePassword(currentPassword, user.password)
+            if(result){
+                let hashedNewPassword = await HashPassword(currentPassword)
+                if(hashedNewPassword){
+                    let updatedUser = await User.findByIdAndUpdate(_id, { password: hashedNewPassword })
+                    let updatedUserResult = await updatedUser.save()
+                    if(updatedUserResult){
+                        request.session.destroy((err)=>{
+                            if(err){
+                                return response.status(500).end()
+                            }
+                            response.clearCookie('connect.sid', { path: "/" })
+                            return response.status(200).end()
+                        })
+                    }
+                    else{
+                        response.status(500).end()
+                    }
+                }
+                else{
+                    response.status(500).end()
+                }
+            }else{
+                response.status(400).end()
+            }
+        }
+        else{
+            response.status(401).end()
+        }
     }
     catch(err){
         response.status(500).end()
