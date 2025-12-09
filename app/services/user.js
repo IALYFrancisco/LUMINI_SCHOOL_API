@@ -1,4 +1,5 @@
 import { User } from "../models/User.js"
+import { ComparePassword } from "./authentication.js"
 
 export async function GetUser(request, response){
     try{
@@ -29,8 +30,21 @@ export async function ChangeUserStatus(request, response) {
 
 export async function DeleteAccount(request, response) {
     try{
-        // let user = await User.findById(request.data._id)
-        console.log(request.body)
+        let user = await User.findById(request.body._id)
+        if(user){
+            let result = await ComparePassword(request.body.password, user.password)
+            if(result){
+                request.session.destroy((err)=>{
+                    if(err){
+                        return response.status(500).end()
+                    }
+                    response.clearCookie('connect.sid', { path: "/" })
+                    return response.status(200).end()
+                })
+                await User.findByIdAndDelete(request.body._id)
+                response.status(200).end()
+            }
+        }
     }
     catch(err){
         response.status(500).end()
