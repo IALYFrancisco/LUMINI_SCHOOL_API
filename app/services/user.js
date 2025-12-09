@@ -29,7 +29,9 @@ export async function ChangeUserStatus(request, response) {
 }
 
 export async function ChangePassword(request, response){
-    try{}
+    try{
+        const { _id } = request.body
+    }
     catch(err){
         response.status(500).end()
     }
