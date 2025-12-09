@@ -35,7 +35,7 @@ export async function ChangePassword(request, response){
         if(user){
             let result = await ComparePassword(currentPassword, user.password)
             if(result){
-                let hashedNewPassword = await HashPassword(currentPassword)
+                let hashedNewPassword = await HashPassword(newPassword)
                 if(hashedNewPassword){
                     let updatedUser = await User.findByIdAndUpdate(_id, { password: hashedNewPassword })
                     let updatedUserResult = await updatedUser.save()
