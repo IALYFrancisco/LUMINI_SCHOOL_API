@@ -28,6 +28,13 @@ export async function ChangeUserStatus(request, response) {
     }
 }
 
+export async function ChangePassword(request, response){
+    try{}
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export async function DeleteAccount(request, response) {
     try{
         let user = await User.findById(request.body._id)
