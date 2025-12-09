@@ -71,7 +71,7 @@ export async function HashPassword(plainText) {
     }
 }
 
-async function ComparePassword(_plain, _hash) {
+export async function ComparePassword(_plain, _hash) {
     let result = await compare(_plain, _hash)
     if(result){
         return true
