@@ -27,6 +27,16 @@ export async function ChangeUserStatus(request, response) {
     }
 }
 
+export async function DeleteAccount(request, response) {
+    try{
+        // let user = await User.findById(request.data._id)
+        console.log(request.body)
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export function isAdminOrSuperuser(request, response, next) {
     if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
         next()
