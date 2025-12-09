@@ -43,6 +43,8 @@ export async function DeleteAccount(request, response) {
                 })
                 await User.findByIdAndDelete(request.body._id)
                 response.status(200).end()
+            }else{
+                response.status(401).end()
             }
         }else{
             response.status(401).end()
