@@ -36,7 +36,7 @@ export async function GetArticle(request, response) {
 
         if(_id || title) {
             if(_id){
-                var article = await Article.findOne({ _id: _id })
+                var article = await Article.findById(_id)
             }
             if(title){
                 var article = await Article.findOne({ title: title })
