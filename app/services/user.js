@@ -68,6 +68,17 @@ export async function ChangePassword(request, response){
     }
 }
 
+export async function UpdateUser(request, response){
+    try{
+        if(!request.file){
+
+        }else{}
+    }
+    catch(err){
+        response.status(500).end()
+    }
+}
+
 export async function DeleteAccount(request, response) {
     try{
         let user = await User.findById(request.body._id)
