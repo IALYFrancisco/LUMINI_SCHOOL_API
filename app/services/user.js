@@ -1,3 +1,4 @@
+import sharp from "sharp"
 import { User } from "../models/User.js"
 import { ComparePassword, HashPassword } from "./authentication.js"
 
@@ -70,9 +71,51 @@ export async function ChangePassword(request, response){
 
 export async function UpdateUser(request, response){
     try{
+        var { _id } = request.query
+        var { name, email, profile, phoneNumber } = request.body
         if(!request.file){
-
-        }else{}
+            let user = await User.findByIdAndUpdate(_id, request.body)
+            let result = await user.save()
+            if(result){
+                if(name){
+                    request.session.user.name = name
+                }
+                if(email){
+                    request.session.user.email = email
+                }
+                if(profile){
+                    request.session.user.profile = profile
+                }
+                if(phoneNumber){
+                    request.session.user.phoneNumber = phoneNumber
+                }
+                response.status(200).end()
+            }
+        }else{
+            let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
+            let user = await User.findById(_id)
+            user.profile = `users/profiles/${fileName}`
+            let result = await user.save()
+            if(result && request.body){
+                let output = `./app/public/users/profiles/${fileName}`
+                await sharp(request.file.buffer).jpeg({quality: 60}).toFile(output)
+                let _user = await User.findByIdAndUpdate(_id, request.body)
+                let _result = await _user.save()
+                if(_result){
+                    if(name){
+                        request.session.user.name = name
+                    }
+                    if(email){
+                        request.session.user.email = email
+                    }
+                    request.session.user.profile = `users/profiles/${fileName}`
+                    if(phoneNumber){
+                        request.session.user.phoneNumber = phoneNumber
+                    }
+                    response.status(200).end()
+                }
+            }
+        }
     }
     catch(err){
         response.status(500).end()
