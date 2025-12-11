@@ -12,7 +12,11 @@ const formationSchema = new mongoose.Schema({
         message: "The description must contains between 50 and 150 words."
     } },
     prerequisites: { type: [String], default: [] },
-    published: { type: Boolean, required: true, default: false }
+    published: { type: Boolean, required: true, default: false },
+    beginDate: { type: Date, default: null },
+    endDate: { type: Date, default: null },
+    coursePlace: { type: String, default: "" },
+    coursePrice: { type: Number, default: null }
 },{timestamps: true})
 
 export const Formation = new mongoose.model('Formations', formationSchema)
