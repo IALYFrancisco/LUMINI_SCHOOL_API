@@ -77,7 +77,6 @@ export async function GetRegistrations(request, response){
                     }
                 ])
                 registrations = registrations.filter( registration => JSON.stringify(registration.user_id) === JSON.stringify(request.session.user._id) )
-                console.log(registrations)
                 response.status(200).json(registrations)
             }
         }
