@@ -7,17 +7,25 @@ import sharp from "sharp"
 
 export async function AddFormation(request, response) {
     try{
-        if(!request.file) return response.status(400).end()
-        let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
-        let newFormation = new Formation(request.body)
-        newFormation.image = `formations/${fileName}`
-        let result = await newFormation.save()
-        if(result){
-            let output = `./app/public/formations/${fileName}`
-            await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+        if(!request.file) {
+            let newFormation = new Formation(request.body)
+            let result = await newFormation.save()
+            if(result){
+                response.status(201).end()
+            }
+        }else{
+            let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
+            let newFormation = new Formation(request.body)
+            newFormation.image = `formations/${fileName}`
+            let result = await newFormation.save()
+            if(result){
+                let output = `./app/public/formations/${fileName}`
+                await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+            }
+            response.status(201).end()
         }
-        response.status(201).end()
     }catch(err){
+        console.log(err)
         response.status(500).json(err)
     }
 }
@@ -38,8 +46,13 @@ export async function GetFormation(request, response){
                 response.status(200).json(formation)
             }
         }else{
-            let formations = await Formation.find({})
-            response.status(200).json(formations)
+            if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
+                let formations = await Formation.find({})
+                response.status(200).json(formations)
+            }else{
+                let formations = await Formation.find({ published: true })
+                response.status(200).json(formations)
+            }
         }
     }catch(err){
         response.status(500).end()
@@ -66,7 +79,28 @@ export async function FormationPublication(request, response) {
 
 export async function UpdateFormation(request, response){
     try{
-        response.status(200).json(request.body)
+        var { _id } = request.query
+        if(!request.file){
+            let formation = await Formation.findByIdAndUpdate(_id, request.body)
+            let result = await formation.save()
+            if(result){
+                response.status(200).end()
+            }
+        }else{
+            let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
+            let formation = await Formation.findOne({ _id: _id })
+            formation.image = `formations/${fileName}`
+            let result = await formation.save()
+            if(result && request.body){
+                let output = `./app/public/formations/${fileName}`
+                await sharp(request.file.buffer).jpeg({ quality: 60 }).toFile(output)
+                let _formation = await Formation.findByIdAndUpdate(_id, request.body)
+                let _result = await _formation.save()
+                if(_result){
+                    response.status(200).end()
+                }
+            }
+        }
     }
     catch(err){
         response.status(500).end()

@@ -29,7 +29,7 @@ export async function Login(request, response) {
         if(user){
             let result = await ComparePassword(request.body.password, user.password)
             if(result){
-                request.session.user = { _id: user._id, name: user.name, email: user.email, status: user.status, phoneNumber: user.phoneNumber }
+                request.session.user = { _id: user._id, name: user.name, email: user.email, status: user.status, phoneNumber: user.phoneNumber, profile: user.profile }
                 response.status(200).end()
             }else{
                 response.status(401).end()
@@ -45,17 +45,13 @@ export async function Login(request, response) {
 
 export async function Logout(request, response) {
     try{
-        if(request.session && request.session.user){
-            request.session.destroy((err)=>{
-                if(err){
-                    return response.status(500).end()
-                }
-                response.clearCookie("connect.sid", { path: "/" })
-                return response.status(200).end()
-            })
-        } else {
-            return response.status(209).end()
-        }
+        request.session.destroy((err)=>{
+            if(err){
+                return response.status(500).end()
+            }
+            response.clearCookie("connect.sid", { path: "/" })
+            return response.status(200).end()
+        })
     }
     catch(err){
         response.status(500).end()
@@ -71,7 +67,7 @@ export async function HashPassword(plainText) {
     }
 }
 
-async function ComparePassword(_plain, _hash) {
+export async function ComparePassword(_plain, _hash) {
     let result = await compare(_plain, _hash)
     if(result){
         return true

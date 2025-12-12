@@ -28,34 +28,58 @@ export async function CreateRegistration(request, response) {
 
 export async function GetRegistrations(request, response){
     try{
-        let registrations = await Registration.aggregate([
-            {
-                $lookup: {
-                    from: "formations",
-                    localField: "formation_id",
-                    foreignField: "_id",
-                    as: "formation"
-                }
-            },
-            { $unwind: "$formation" },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "user_id",
-                    foreignField: "_id",
-                    as: "user"
-                }
-            },
-            { $unwind: "$user" },
-            {
-                $project: {
-                    formation_id: 0,
-                    user_id: 0,
-                    __v: 0
-                }
+        {
+            if(request.session.user.status === "admin" || request.session.user.status === "superuser"){
+                let registrations = await Registration.aggregate([
+                    {
+                        $lookup: {
+                            from: "formations",
+                            localField: "formation_id",
+                            foreignField: "_id",
+                            as: "formation"
+                        }
+                    },
+                    { $unwind: "$formation" },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "user_id",
+                            foreignField: "_id",
+                            as: "user"
+                        }
+                    },
+                    { $unwind: "$user" },
+                    {
+                        $project: {
+                            formation_id: 0,
+                            user_id: 0,
+                            __v: 0
+                        }
+                    }
+                ])
+                response.status(200).json(registrations)
+            }else{
+                let registrations = await Registration.aggregate([
+                    {
+                        $lookup: {
+                            from: "formations",
+                            localField: "formation_id",
+                            foreignField: "_id",
+                            as: "formation"
+                        }
+                    },
+                    { $unwind: "$formation" },
+                    {
+                        $project: {
+                            formation_id: 0,
+                            __v: 0
+                        }
+                    }
+                ])
+                registrations = registrations.filter( registration => JSON.stringify(registration.user_id) === JSON.stringify(request.session.user._id) )
+                response.status(200).json(registrations)
             }
-        ])
-        response.status(200).json(registrations)
+        }
     }
     catch(err){
         response.status(500).end()
