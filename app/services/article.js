@@ -32,14 +32,17 @@ export async function AddArticle(request, response) {
 export async function GetArticle(request, response) {
     try{
 
-        var { _id, title } = request.query
+        var { _id, title, slug } = request.query
 
-        if(_id || title) {
+        if(_id || title || slug) {
             if(_id){
                 var article = await Article.findById(_id)
             }
             if(title){
                 var article = await Article.findOne({ title: title })
+            }
+            if(slug){
+                var article = await Article.findOne({ slug: slug })
             }
             article.published ? response.status(200).json(article) : response.status(209).end()
         }else{
