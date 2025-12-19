@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import slugify from "slugify"
 
 const articleSchema = new Schema({
     title: { type: String, required: true, unique: true },
@@ -9,5 +10,16 @@ const articleSchema = new Schema({
     author: { type: Schema.Types.ObjectId, required: true },
     image: { type: String, required: true }
 }, { timestamps: true })
+
+articleSchema.pre("save", function (next) {
+    if(this.isModified("title")){
+        this.slug = slugify(this.title, {
+            lower: true,
+            strict: true,
+            locale: "fr"
+        })
+    }
+    next()
+})
 
 export const Article = new model('Article', articleSchema)
