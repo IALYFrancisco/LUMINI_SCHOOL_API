@@ -2,6 +2,7 @@ import { model, Schema } from "mongoose";
 
 const articleSchema = new Schema({
     title: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true, index: true },
     contents: { type: String, required: true },
     published: { type: Boolean, required: true, default: false },
     publishedAt: { type: Date, default: null },
