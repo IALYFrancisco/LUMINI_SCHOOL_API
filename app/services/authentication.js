@@ -31,12 +31,9 @@ export async function Login(request, response) {
             if(result){
                 request.session.user = { _id: user._id, name: user.name, email: user.email, status: user.status, phoneNumber: user.phoneNumber, profile: user.profile }
                 response.status(200).end()
-            }else{
-                response.status(401).end()
             }
-        }else{
-            response.status(209).end()
         }
+        response.status(401).end()
     }
     catch(err){
         response.status(500).end()
