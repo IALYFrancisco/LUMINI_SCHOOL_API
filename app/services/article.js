@@ -2,6 +2,7 @@ import multer, { diskStorage } from "multer"
 import { Article } from "../models/Article.js"
 import sharp from "sharp"
 import path from 'path'
+import slugify from "slugify"
 
 export async function AddArticle(request, response) {
     try{
@@ -82,6 +83,13 @@ export async function UpdateArticle(request, response){
         var { _id } = request.query
         if(!request.file){
             let article = await Article.findByIdAndUpdate(_id, request.body)
+            if(request.body.title){
+                article.slug = slugify(request.body.title, {
+                    lower: true,
+                    strict: true,
+                    locale: "fr"
+                })
+            }
             let result = await article.save()
             if(result){
                 response.status(200).end()
@@ -89,6 +97,13 @@ export async function UpdateArticle(request, response){
         }else{
             let fileName = `${Date.now()}-${Math.random(Math.random()*1E9)}.jpeg`
             let article = await Article.findOne({ _id: _id })
+            if(request.body.title){
+                article.slug = slugify(request.body.title, {
+                    lower: true,
+                    strict: true,
+                    locale: "fr"
+                })
+            }
             article.image = `articles/posters/${fileName}`
             article.author = request.session.user._id
             let result = await article.save()
