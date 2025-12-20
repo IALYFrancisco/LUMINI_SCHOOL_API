@@ -80,9 +80,8 @@ export async function SendClientEmail(request, response){
         axios.post(process.env.EMAIL_SERVER_URL, emailToSend, { headers: {
             "content-type": "application/json",
             "api-key": process.env.EMAIL_API_KEY
-        } }).then(()=>{
-            response.status(200).end()
-        })
+        } }).then(()=>response.status(200).end())
+        .catch(()=>response.status(500).end())
     }catch{
         response.status(500).end()
     }
