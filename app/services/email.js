@@ -82,12 +82,8 @@ export async function SendClientEmail(request, response){
             "api-key": process.env.EMAIL_API_KEY
         } }).then(()=>{
             response.status(200).end()
-        }).catch((err)=>{
-            console.log(err)
-            response.status(500).end()
         })
-    }catch(err){
-        console.log(err)
+    }catch{
         response.status(500).end()
     }
 }
