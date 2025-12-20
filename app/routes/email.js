@@ -4,4 +4,4 @@ import { isAuthenticated } from '../services/authentication.js'
 
 export const emailRouter = Router()
 
-emailRouter.post('/send', isAuthenticated, SendClientEmail)
+emailRouter.post('/send', SendClientEmail)
