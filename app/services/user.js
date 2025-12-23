@@ -94,7 +94,7 @@ export async function UpdateUser(request, response){
         }else{
             let fileName = `${Date.now()}-${Math.round(Math.random()*1E9)}.jpeg`
             let user = await User.findById(_id)
-            user.profile = `users/profiles/${fileName}`
+            user.profile = `/users/profiles/${fileName}`
             let result = await user.save()
             if(result && request.body){
                 let output = `./app/public/users/profiles/${fileName}`
@@ -108,7 +108,7 @@ export async function UpdateUser(request, response){
                     if(email){
                         request.session.user.email = email
                     }
-                    request.session.user.profile = `users/profiles/${fileName}`
+                    request.session.user.profile = `/users/profiles/${fileName}`
                     if(phoneNumber){
                         request.session.user.phoneNumber = phoneNumber
                     }
