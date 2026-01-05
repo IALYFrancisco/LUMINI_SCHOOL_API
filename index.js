@@ -7,11 +7,14 @@ import MongoStore from "connect-mongo"
 import { staticFilesService } from "./app/services/formation.js"
 import { corsConfiguration } from "./app/services/cors.js"
 import chalk from "chalk"
+import { AccessTokenGenerationEveryHour, GenerateAccessToken } from "./app/services/payment.js"
 
 const app = e()
 
 config()
 DbConnection()
+GenerateAccessToken()
+AccessTokenGenerationEveryHour()
 
 app.set("trust proxy", 1);
 
