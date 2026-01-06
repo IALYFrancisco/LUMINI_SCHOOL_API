@@ -2,7 +2,10 @@ import axios from "axios"
 import { createClient } from "redis"
 
 export async function InitiateTransaction(request, response) {
-    
+    try{
+        const access_token = await GenerateAccessToken()
+    }
+    catch{}
 }
 
 export async function GenerateAccessToken() {
