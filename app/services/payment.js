@@ -1,6 +1,10 @@
 import axios from "axios"
 import { createClient } from "redis"
 
+export async function InitiateTransaction(request, response) {
+    
+}
+
 export async function GenerateAccessToken() {
 
     let cachedToken = await redisClient.get("mvola:access_token")
@@ -24,7 +28,7 @@ export async function GenerateAccessToken() {
         await redisClient.set("mvola:access_token", access_token, { EX: expires_in - 60 })
         return access_token
     })
-    .catch(()=>{return})
+    .catch(()=>{return null})
 }
 
 const redisClient = createClient({
