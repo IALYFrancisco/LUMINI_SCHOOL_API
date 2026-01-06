@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { InitiateTransaction } from "../services/payment";
-import { isAuthenticated } from "../services/authentication";
+import { InitiateTransaction } from "../services/payment.js";
+import { isAuthenticated } from "../services/authentication.js";
 
-const paymentRouter = Router()
+export const paymentRouter = Router()
 
 paymentRouter.post('/initiate', isAuthenticated, InitiateTransaction)
