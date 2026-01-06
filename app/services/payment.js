@@ -1,14 +1,22 @@
 import axios from "axios"
 
-const credentials = Buffer.from(`${process.env.MVOLA_CONSUMER_KEY}:${process.env.MVOLA_CONSUMER_SECRET}`).toString("base64")
 
-export const GenerateAccessToken = ( request, response, next ) => {
-    axios.post(`${process.env.MVOLA_API_ENDPOINT}/token`, {}, { headers: { Authorization: `Basic ${credentials}` } })
-    .then()
-    .catch()
-    .finally(()=>{ next() })
+export const GenerateAccessToken = () => {
+    let credentials = Buffer.from(`${process.env.MVOLA_CONSUMER_KEY}:${process.env.MVOLA_CONSUMER_SECRET}`).toString("base64")
+    axios.post(
+        `${process.env.MVOLA_API_ENDPOINT}/token`,
+        { "grant_type": "client_credentials", "scope": "EXT_INT_MVOLA_SCOPE" },
+        { headers: { 
+            Authorization: `Basic ${credentials}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Cache-Control": "no-cache" 
+        }})
+    .then( async (response)=>{
+        await 
+    })
+    .catch(()=>{return})
 }
 
 export function RefreshToken(){
-    setInterval( GenerateAccessToken , 55 * 60 * 1_000)
+    setInterval( GenerateAccessToken , 55 * 60 * 1_000 )
 }

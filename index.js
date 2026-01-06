@@ -13,7 +13,7 @@ const app = e()
 
 config()
 DbConnection()
-app.use(GenerateAccessToken)
+GenerateAccessToken()
 RefreshToken()
 
 app.set("trust proxy", 1);
