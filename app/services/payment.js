@@ -1,5 +1,10 @@
 import axios from "axios"
 
+var cache = {
+    access_token: null,
+    expires_at: 0
+}
+
 export async function InitiateTransaction(request, response) {
     try{
         const access_token = await GenerateAccessToken()
@@ -8,11 +13,6 @@ export async function InitiateTransaction(request, response) {
         }
     }
     catch{}
-}
-
-var cache = {
-    access_token: null,
-    expires_at: 0
 }
 
 export async function GenerateAccessToken() {
