@@ -3,6 +3,9 @@ import axios from "axios"
 export async function InitiateTransaction(request, response) {
     try{
         const access_token = await GenerateAccessToken()
+        if(!access_token){
+            return response.status(500).end()
+        }
     }
     catch{}
 }
