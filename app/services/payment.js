@@ -7,14 +7,15 @@ var cache = {
 
 export async function InitiateTransaction(request, response) {
     try{
-        // const access_token = await GenerateAccessToken()
-        // if(!access_token){
-        //     return response.status(500).end()
-        // }
-        console.log(request.body)
+        const access_token = await GenerateAccessToken()
+        if(!access_token){
+            return response.status(500).end()
+        }
         response.status(200).end()
     }
-    catch{}
+    catch{
+        response.status(500).end()
+    }
 }
 
 export async function GenerateAccessToken() {
