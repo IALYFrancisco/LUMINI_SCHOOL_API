@@ -1,5 +1,4 @@
 import axios from "axios"
-import { createClient } from "redis"
 
 export async function InitiateTransaction(request, response) {
     try{
@@ -37,13 +36,3 @@ export async function GenerateAccessToken() {
     catch{ return null }
 
 }
-
-const redisClient = createClient({
-    url: "redis://localhost:6379"
-})
-
-redisClient.on('error', (err)=>{
-    console.error("Redis error", err)
-})
-
-await redisClient.connect()
