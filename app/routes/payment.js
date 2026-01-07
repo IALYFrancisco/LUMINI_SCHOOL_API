@@ -4,4 +4,4 @@ import { isAuthenticated } from "../services/authentication.js";
 
 export const paymentRouter = Router()
 
-paymentRouter.post('/initiate', isAuthenticated, InitiateTransaction)
+paymentRouter.post('/mvola/initiate', isAuthenticated, InitiateTransaction)
