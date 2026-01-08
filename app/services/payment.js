@@ -43,10 +43,10 @@ export async function InitiateTransaction(request, response) {
                 "Cache-Control": "no-cache"
             }
         })
-        response.status(200).end()
+        return response.status(200).end()
     }
     catch{
-        response.status(500).end()
+        return response.status(500).end()
     }
 }
 
