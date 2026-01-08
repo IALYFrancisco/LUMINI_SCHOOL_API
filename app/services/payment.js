@@ -1,4 +1,6 @@
 import axios from "axios"
+import { Registration } from "../models/Registration.js"
+import { Formation } from "../models/Formation.js"
 
 var cache = {
     access_token: null,
@@ -11,6 +13,35 @@ export async function InitiateTransaction(request, response) {
         if(!access_token){
             return response.status(500).end()
         }
+        let registration = await Registration.findById(request.body.registration, {_id:1})
+        let formation = await Formation.findById(registration.formation_id, { _id: 0, title: 1, coursePrice: 1 })
+        let transactionBody = {
+            amount: `${formation.coursePrice}`,
+            currency: "Ar",
+            descriptionText: `Paiement du droit de formation ${formation.title}.`,
+            requestingOrganisationTransactionReference: crypto.randomUUID(),
+            requestDate: new Date().toISOString(),
+            debitParty: [{
+                key: "msisdn",
+                value: request.body.clientMsisdn
+            }],
+            creditParty: [{
+                key: "msisdn",
+                value: "0343500004"
+            }],
+            metaData: [{
+                key: "partnerName",
+                value: "LUMINI School"
+            }]
+        }
+        const _response = await axios.post(`${process.env.MVOLA_API_ENDPOINT}/mvola/mm/transactions/type/merchantpay/1.0.0/`, transactionBody, {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+                "X-CorrelationID": crypto.randomUUID(),
+                "Version": "1.0",
+                "Cache-Control": "no-cache"
+            }
+        })
         response.status(200).end()
     }
     catch{
