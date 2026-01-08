@@ -13,7 +13,7 @@ export async function InitiateTransaction(request, response) {
         if(!access_token){
             return response.status(500).end()
         }
-        let registration = await Registration.findById(request.body.registration, {_id:1})
+        let registration = await Registration.findById(request.body.registration, {_id: 0, formation_id:1})
         let formation = await Formation.findById(registration.formation_id, { _id: 0, title: 1, coursePrice: 1 })
         let transactionBody = {
             amount: `${formation.coursePrice}`,
