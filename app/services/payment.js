@@ -20,6 +20,7 @@ export async function InitiateTransaction(request, response) {
             currency: "Ar",
             descriptionText: `Paiement du droit de formation ${formation.title}.`,
             requestingOrganisationTransactionReference: crypto.randomUUID(),
+            originalTransactionReferance: crypto.randomUUID(),
             requestDate: new Date().toISOString(),
             debitParty: [{
                 key: "msisdn",
