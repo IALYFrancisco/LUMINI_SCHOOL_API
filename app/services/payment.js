@@ -11,7 +11,7 @@ export async function InitiateTransaction(request, response) {
     try{
         const access_token = await GenerateAccessToken()
         if(!access_token){
-            return response.status(500).end()
+            return response.status(500).json()
         }
         let registration = await Registration.findById(request.body.registration, {_id: 0, formation_id:1})
         let formation = await Formation.findById(registration.formation_id, { _id: 0, title: 1, coursePrice: 1 })
@@ -19,27 +19,21 @@ export async function InitiateTransaction(request, response) {
             amount: `${formation.coursePrice}`,
             currency: "Ar",
             descriptionText: `Paiement du droit de formation ${formation.title}.`,
-            requestingOrganisationTransactionReference: crypto.randomUUID(),
-            originalTransactionReferance: crypto.randomUUID(),
             requestDate: new Date().toISOString(),
-            debitParty: [{
-                key: "msisdn",
-                value: request.body.clientMsisdn
-            }],
-            creditParty: [{
-                key: "msisdn",
-                value: "0343500004"
-            }],
-            metaData: [{
-                key: "partnerName",
-                value: "LUMINI School"
-            }]
+            debitParty: [{ key: "msisdn", value: request.body.clientMsisdn }],
+            creditParty: [{ key: "msisdn", value: "0343500004" }],
+            metaData: [{ key: "partnerName", value: "LUMINI School" }],
+            requestingOrganisationTransactionReference: crypto.randomUUID(),
+            originalTransactionReference: crypto.randomUUID(),
         }
         const _response = await axios.post(`${process.env.MVOLA_API_ENDPOINT}/mvola/mm/transactions/type/merchantpay/1.0.0/`, transactionBody, {
             headers: {
                 Authorization: `Bearer ${access_token}`,
-                "X-CorrelationID": crypto.randomUUID(),
                 "Version": "1.0",
+                "X-CorrelationID": crypto.randomUUID(),
+                "UserLanguage": "FR",
+                "UserAccountIdentifier": "msisdn;0343500004",
+                "Content-Type": "application/json",
                 "Cache-Control": "no-cache"
             }
         })
