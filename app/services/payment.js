@@ -22,9 +22,9 @@ export async function InitiateTransaction(request, response) {
             requestDate: new Date().toISOString(),
             debitParty: [{ key: "msisdn", value: request.body.clientMsisdn }],
             creditParty: [{ key: "msisdn", value: "0343500004" }],
-            metaData: [{ key: "partnerName", value: "LUMINI School" }],
+            metadata: [{ key: "partnerName", value: "LUMINI School" }],
             requestingOrganisationTransactionReference: crypto.randomUUID(),
-            originalTransactionReference: crypto.randomUUID(),
+            originalTransactionReference: crypto.randomUUID()
         }
         const _response = await axios.post(`${process.env.MVOLA_API_ENDPOINT}/mvola/mm/transactions/type/merchantpay/1.0.0/`, transactionBody, {
             headers: {
