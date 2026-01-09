@@ -19,27 +19,21 @@ export async function InitiateTransaction(request, response) {
             amount: `${formation.coursePrice}`,
             currency: "Ar",
             descriptionText: `Paiement du droit de formation ${formation.title}.`,
-            requestingOrganisationTransactionReference: crypto.randomUUID(),
-            originalTransactionReferance: crypto.randomUUID(),
             requestDate: new Date().toISOString(),
-            debitParty: [{
-                key: "msisdn",
-                value: request.body.clientMsisdn
-            }],
-            creditParty: [{
-                key: "msisdn",
-                value: "0343500004"
-            }],
-            metaData: [{
-                key: "partnerName",
-                value: "LUMINI School"
-            }]
+            debitParty: [{ key: "msisdn", value: request.body.clientMsisdn }],
+            creditParty: [{ key: "msisdn", value: "0343500004" }],
+            metadata: [{ key: "partnerName", value: "LUMINI School" }],
+            requestingOrganisationTransactionReference: crypto.randomUUID(),
+            originalTransactionReference: crypto.randomUUID()
         }
         const _response = await axios.post(`${process.env.MVOLA_API_ENDPOINT}/mvola/mm/transactions/type/merchantpay/1.0.0/`, transactionBody, {
             headers: {
                 Authorization: `Bearer ${access_token}`,
-                "X-CorrelationID": crypto.randomUUID(),
                 "Version": "1.0",
+                "X-CorrelationID": crypto.randomUUID(),
+                "UserLanguage": "FR",
+                "UserAccountIdentifier": "msisdn;0343500004",
+                "Content-Type": "application/json",
                 "Cache-Control": "no-cache"
             }
         })
