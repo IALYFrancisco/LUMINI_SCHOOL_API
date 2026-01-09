@@ -66,3 +66,5 @@ export async function GenerateAccessToken() {
         return access_token
     }
     catch{ return null }
+
+}
