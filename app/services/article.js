@@ -45,7 +45,11 @@ export async function GetArticle(request, response) {
             if(slug){
                 var article = await Article.findOne({ slug: slug })
             }
-            article.published ? response.status(200).json(article) : response.status(209).end()
+            if(request.session && request.session.user && (request.session.user.status === "admin" || request.session.user.status === "superuser")){
+                response.status(200).json(article)
+            }else{
+                article.published ? response.status(200).json(article) : response.status(209).end()
+            }
         }else{
             if(request.session && request.session.user && (request.session.user.status === "admin" || request.session.user.status === "superuser")){
                 let articles = await Article.find({})
