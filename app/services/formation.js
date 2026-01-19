@@ -35,10 +35,22 @@ export async function GetFormation(request, response){
         var { _id, title } = request.query
         if(_id || title){
             if(_id){
-                var formation = await Formation.find({ _id: _id })
+                if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
+                    var formations = await Formation.find({ _id: { $regex: _id, $options: 'i' }})
+                    response.status(200).json(formations)
+                }else{
+                    let formations = await Formation.find({ published: true, _id: { $regex: _id, $options: 'i' }})
+                    response.status(200).json(formations)
+                }
             }
             if(title){
-                var formation = await Formation.find({ title: title })
+                if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
+                    var formations = await Formation.find({ title: { $regex: title, $options: 'i' }})
+                    response.status(200).json(formations)
+                }else{
+                    let formations = await Formation.find({ published: true, title: { $regex: title, $options: 'i' }})
+                    response.status(200).json(formations)
+                }
             }
             if(formation.length===0){
                 response.status(209).end()
