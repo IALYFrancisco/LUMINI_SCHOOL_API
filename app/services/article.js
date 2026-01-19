@@ -40,7 +40,13 @@ export async function GetArticle(request, response) {
                 var article = await Article.findById(_id)
             }
             if(title){
-                var article = await Article.findOne({ title: title })
+                var articles = await Article.find({ title: { $regex: title, $options: 'i' } })
+                if(request.session && request.session.user && (request.session.user.status === "admin" || request.session.user.status === "superuser")){
+                    response.status(200).json(articles)
+                }else{
+                    articles.filter( article => article.published === true )
+                    response.status(200).json(articles)
+                }
             }
             if(slug){
                 var article = await Article.findOne({ slug: slug })
