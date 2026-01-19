@@ -36,10 +36,10 @@ export async function GetFormation(request, response){
         if(_id || title){
             if(_id){
                 if(request.session && request.session.user && (request.session.user.status === "superuser" || request.session.user.status === "admin")){
-                    var formations = await Formation.find({ _id: { $regex: _id, $options: 'i' }})
+                    var formations = await Formation.find({ _id: _id })
                     response.status(200).json(formations)
                 }else{
-                    let formations = await Formation.find({ published: true, _id: { $regex: _id, $options: 'i' }})
+                    let formations = await Formation.find({ published: true, _id: _id })
                     response.status(200).json(formations)
                 }
             }
