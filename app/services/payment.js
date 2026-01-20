@@ -14,15 +14,15 @@ export async function InitiateTransaction(request, response) {
             return response.status(500).end()
         }
         let registration = await Registration.findById(request.body.registration, {_id: 0, formation_id:1})
-        let formation = await Formation.findById(registration.formation_id, { _id: 0, title: 1, coursePrice: 1 })
+        let formation = await Formation.findById(registration.formation_id, { title: 1, coursePrice: 1 })
         let transactionBody = {
             amount: `${formation.coursePrice}`,
             currency: "Ar",
-            descriptionText: `Paiement du droit de formation ${formation.title}.`,
+            descriptionText: `paiement de droit du formation ${formation._id}`,
             requestDate: new Date().toISOString(),
             debitParty: [{ key: "msisdn", value: request.body.clientMsisdn }],
             creditParty: [{ key: "msisdn", value: "0343500004" }],
-            metadata: [{ key: "partnerName", value: "LUMINI School" }],
+            metadata: [{ key: "partnerName", value: "lumini" }],
             requestingOrganisationTransactionReference: crypto.randomUUID(),
             originalTransactionReference: crypto.randomUUID()
         }
